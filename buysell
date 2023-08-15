@@ -1,0 +1,24 @@
+//@version=4
+strategy("Moving Average Crossover", overlay = true)
+
+// Define the length for the short and long moving averages
+short_length = input(10, title = "Short MA Length")
+long_length = input(50, title = "Long MA Length")
+
+// Calculate moving averages
+short_ma = sma(close, short_length)
+long_ma = sma(close, long_length)
+
+// Buy condition: Short MA crosses above Long MA
+buy_condition = crossover(short_ma, long_ma)
+
+// Sell condition: Short MA crosses below Long MA
+sell_condition = crossunder(short_ma, long_ma)
+
+// Plot the moving averages on the chart
+plot(short_ma, title = "Short MA", color = color.blue)
+plot(long_ma, title = "Long MA", color = color.red)
+
+// Execute buy and sell orders
+strategy.entry("Buy", strategy.long, when = buy_condition)
+strategy.close("Buy", when = sell_condition)
